@@ -13,11 +13,19 @@ let io;
  * - Flutter (pendiente): emite `location:update` con lat/lng
  */
 export function initSocket(httpServer) {
+  const corsOrigin = env.corsOrigin === true ? '*' : env.corsOrigin;
+
   io = new Server(httpServer, {
+    path: '/socket.io',
     cors: {
-      origin: env.corsOrigin,
-      methods: ['GET', 'POST']
-    }
+      origin: corsOrigin,
+      methods: ['GET', 'POST', 'OPTIONS'],
+      credentials: true
+    },
+    transports: ['websocket', 'polling'],
+    allowEIO3: true,
+    pingInterval: 10000,
+    pingTimeout: 20000
   });
   setIO(io);
 

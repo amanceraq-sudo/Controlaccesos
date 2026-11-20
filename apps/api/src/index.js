@@ -17,9 +17,11 @@ async function bootstrap() {
     console.log('Socket.IO deshabilitado en este entorno — usa REST /api/tracking/location');
   }
 
-  server.listen(env.port, () => {
-    console.log(`API escuchando en http://localhost:${env.port}`);
-    console.log('Endpoint móvil REST: POST /api/tracking/location');
+  server.listen(env.port, '0.0.0.0', () => {
+    console.log(`API escuchando en http://0.0.0.0:${env.port}`);
+    console.log(`Socket.IO: ${env.enableSocket ? 'ON' : 'OFF'}`);
+    console.log('Móvil REST: POST /api/tracking/location');
+    console.log('Móvil Socket: event location:update');
   });
 }
 

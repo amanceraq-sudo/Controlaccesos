@@ -38,6 +38,37 @@ npm run dev
 
 En local, Socket.IO está activo. En Vercel se usa **REST + polling**.
 
+## Siguiente paso crítico: Socket.IO (móvil)
+
+`https://controlaccesos-one.vercel.app` sirve el **panel web + REST**, pero **Vercel no soporta Socket.IO persistente**.
+
+Para el cliente Flutter con GPS en tiempo real necesitas un API Node (incluido en este monorepo) en **Render** (WebSockets OK):
+
+1. Entra a https://dashboard.render.com y crea un **Web Service** desde el repo `Controlaccesos`
+2. Usa el `render.yaml` de la raíz (o build `npm install --workspace=@control-accesos/api` / start `npm run start -w @control-accesos/api`)
+3. Variables: `MONGODB_URI`, `JWT_SECRET`, `ENABLE_SOCKET=true`, `CORS_ORIGIN=*`
+4. Obtén la URL tipo `https://accesovivo-api.onrender.com`
+5. Recompila el APK apuntando a esa URL:
+
+```powershell
+cd apps/mobile
+.\build_apk.ps1 -ApiBaseUrl "https://TU-SERVICIO.onrender.com"
+```
+
+En Vercel (frontend) agrega:
+- `VITE_API_URL=https://TU-SERVICIO.onrender.com/api`
+- `VITE_SOCKET_URL=https://TU-SERVICIO.onrender.com`
+- `VITE_ENABLE_SOCKET=true`
+
+Así el mapa web también recibe sockets en vivo.
+
+### APK
+
+- Escritorio: `AccesoVivo.apk`
+- Proyecto: `apps/mobile/dist/accesovivo-release.apk`
+
+Login demo móvil: `movil1@accesos.local` / `Movil123!`
+
 ## Publicar en Vercel (monorepo)
 
 ### 1. Sube el repo y crea un proyecto
