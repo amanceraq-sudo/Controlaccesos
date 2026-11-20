@@ -1,0 +1,6 @@
+apps/web/dist
+**/*.md
+.git
+.vscode
+.idea
+apps/mobile
